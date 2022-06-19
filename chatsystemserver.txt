@@ -1,0 +1,44 @@
+import java.util.Scanner;
+import java.net.*;
+import java.io.*;
+public class Server {
+    
+    public static void main(String[] args)throws IOException {
+    
+        server();
+        
+    }
+
+    public static void server() throws IOException {
+        ServerSocket ss = new ServerSocket(5000);
+        System.out.println("Server is online......");
+        System.out.println("Waiting for client.....");
+        Socket socket = ss.accept();
+        System.out.println("Connected.");
+
+        InputStreamReader input = new InputStreamReader(socket.getInputStream());
+        OutputStreamWriter output = new OutputStreamWriter(socket.getOutputStream());
+
+        BufferedReader br = new BufferedReader(input);
+        BufferedWriter bw = new BufferedWriter(output);
+        Scanner sc = new Scanner(System.in); 
+        while (true) {
+            
+            String text = sc.nextLine();
+            bw.write(text);
+            bw.newLine();
+            bw.flush();
+            System.out.println("Client: " + br.readLine());
+
+            if (text.equalsIgnoreCase("bye"))
+            {
+                break;
+            }
+        }
+        input.close();
+        output.close();
+        socket.close();
+        br.close();
+        bw.close();
+    }
+} 
